@@ -24,6 +24,9 @@ hexo.extend.filter.register('after_post_render', function(data){
       var endPos = link.length-1;
     }
     link = link.substring(beginPos, endPos) + '/' + appendLink;
+    if(config.root.length>1){
+      link = link.substring(config.root.length-1,link.length);
+    }
 
     var toprocess = ['excerpt', 'more', 'content'];
     for(var i = 0; i < toprocess.length; i++){
@@ -51,10 +54,11 @@ hexo.extend.filter.register('after_post_render', function(data){
             var srcArray = src.split('/').filter(function(elem){
               return elem != '' && elem != '.';
             });
-            if(srcArray.length > 1)
-            srcArray.shift();
-            src = srcArray.join('/');
-
+            if(srcArray.length > 1){
+              src = srcArray[srcArray.length - 1];
+            }else{
+              src = srcArray.join('/');
+            }
             $(this).attr('src', config.root + link + src);
             console.info&&console.info("update link as:-->"+config.root + link + src);
           }
